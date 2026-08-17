@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Wallet - PayLedger</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('main.static', filename='css/member.css') }}"
+    >
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+            <span class="brand-icon">₹</span>
+            <span>PayLedger</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+            <a class="active" href="{{ url_for('main.wallet') }}">
+                My Wallet
+            </a>
+
+            <a href="{{ url_for('main.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.transfer') }}">
+                Transfer
+            </a>
+
+            <a class="logout" href="{{ url_for('auth.logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    DIGITAL WALLET
+                </p>
+
+                <h1>
+                    My Wallet
+                </h1>
+
+                <p class="hero-text">
+                    Manage your PayLedger balance and view your wallet activity.
+                </p>
+
+            </div>
+
+            <div class="status-badge">
+                <span></span>
+                {{ wallet.status }}
+            </div>
+
+        </section>
+
+
+        <section class="wallet-card wallet-main-card">
+
+            <div class="wallet-top">
+
+                <div>
+
+                    <p class="card-label">
+                        WALLET NUMBER
+                    </p>
+
+                    <h2 class="wallet-number-large">
+                        {{ wallet.wallet_number }}
+                    </h2>
+
+                </div>
+
+                <div class="wallet-symbol">
+                    ₹
+                </div>
+
+            </div>
+
+
+            <div class="wallet-balance">
+
+                <p class="card-label">
+                    AVAILABLE BALANCE
+                </p>
+
+                <div class="balance-large">
+                    ₹{{ wallet.balance }}
+                </div>
+
+                <span class="status">
+                    {{ wallet.status }}
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <section class="action-grid wallet-actions">
+
+            <a
+                class="action-card"
+                href="{{ url_for('main.transfer') }}"
+            >
+
+                <div class="action-icon transfer-icon">
+                    ↗
+                </div>
+
+                <div>
+                    <h3>Send Money</h3>
+                    <p>Transfer money to another PayLedger user.</p>
+                </div>
+
+                <span class="arrow">→</span>
+
+            </a>
+
+
+            <a
+                class="action-card"
+                href="{{ url_for('main.transactions') }}"
+            >
+
+                <div class="action-icon transaction-icon">
+                    ☷
+                </div>
+
+                <div>
+                    <h3>Transaction History</h3>
+                    <p>View all your wallet transactions.</p>
+                </div>
+
+                <span class="arrow">→</span>
+
+            </a>
+
+        </section>
+
+
+        <section class="security-card">
+
+            <div class="security-icon">
+                🔒
+            </div>
+
+            <div>
+
+                <h3>Wallet Security</h3>
+
+                <p>
+                    Your wallet is protected by PayLedger's
+                    authenticated transaction system.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <a
+            class="back-link"
+            href="{{ url_for('main.dashboard') }}"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            © 2026 PayLedger · Secure Digital Wallet
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

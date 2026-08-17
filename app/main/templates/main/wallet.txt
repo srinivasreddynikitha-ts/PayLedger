@@ -1,0 +1,9 @@
+PayLedger
+Dashboard Transactions
+My Wallet
+Welcome, {{ current_user.name }}
+Wallet Number
+{{ wallet.wallet_number }}
+â‚¹{{ wallet.balance }}
+{{ wallet.status }}
+View Transactions Dashboard

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transaction History - PayLedger</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('main.static', filename='css/member.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+            <span class="brand-icon">₹</span>
+            <span>PayLedger</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('main.wallet') }}">
+                My Wallet
+            </a>
+
+            <a class="active" href="{{ url_for('main.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.transfer') }}">
+                Transfer
+            </a>
+
+            <a class="logout" href="{{ url_for('auth.logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    WALLET ACTIVITY
+                </p>
+
+                <h1>
+                    Transaction History
+                </h1>
+
+                <p class="hero-text">
+                    View and track your recent PayLedger wallet activity.
+                </p>
+
+            </div>
+
+            <div class="history-icon">
+                ☷
+            </div>
+
+        </section>
+
+
+        {% if transaction_display %}
+
+            <div class="transaction-list">
+
+                {% for item in transaction_display %}
+
+                    {% set transaction = item.transaction %}
+
+                    <a
+                        class="transaction-link"
+                        href="{{ url_for(
+                            'main.transaction_detail',
+                            transaction_id=transaction.id
+                        ) }}"
+                    >
+
+                        <section class="transaction-card transaction-item">
+
+                            <div class="transaction-icon-large
+                                {% if item.display_class == 'credit' %}
+                                    credit-bg
+                                {% else %}
+                                    debit-bg
+                                {% endif %}
+                            ">
+
+                                {% if item.display_class == 'credit' %}
+                                    +
+                                {% else %}
+                                    −
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="transaction-main">
+
+                                <div class="transaction-title-row">
+
+                                    <div>
+
+                                        <h3 class="{{ item.display_class }}">
+
+                                            {{ item.display_sign }}
+                                            ₹{{ transaction.amount }}
+
+                                        </h3>
+
+                                        <p class="transaction-type">
+                                            {{ item.display_type }}
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class="transaction-status">
+
+                                        <span class="status-dot"></span>
+
+                                        {{ transaction.status }}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="transaction-meta">
+
+                                    <div>
+
+                                        <span>REFERENCE</span>
+
+                                        <strong>
+                                            {{ transaction.reference }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>DATE</span>
+
+                                        <strong>
+                                            {{ transaction.created_at }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="transaction-bottom">
+
+                                    <p>
+                                        <strong>Remark:</strong>
+                                        {{ transaction.remark or "N/A" }}
+                                    </p>
+
+                                    <span class="details-link">
+                                        View Details →
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <section class="wallet-card empty-transactions">
+
+                <div class="empty-icon">
+                    ☷
+                </div>
+
+                <h2>
+                    No Transactions Yet
+                </h2>
+
+                <p>
+                    Your wallet transactions will appear here
+                    once you send or receive money.
+                </p>
+
+                <a
+                    class="btn"
+                    href="{{ url_for('main.transfer') }}"
+                >
+                    Send Money
+                </a>
+
+            </section>
+
+        {% endif %}
+
+
+        <a
+            class="back-link"
+            href="{{ url_for('main.wallet') }}"
+        >
+            ← Back to My Wallet
+        </a>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            © 2026 PayLedger · Secure Digital Wallet
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

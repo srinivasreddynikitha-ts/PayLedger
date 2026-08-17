@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PayLedger Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('main.static', filename='css/member.css') }}"
+    >
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+            <span class="brand-icon">₹</span>
+            <span>PayLedger</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a class="active" href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('main.wallet') }}">
+                My Wallet
+            </a>
+
+            <a href="{{ url_for('main.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.transfer') }}">
+                Transfer
+            </a>
+
+            <a class="logout" href="{{ url_for('auth.logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+                <p class="eyebrow">PERSONAL WALLET</p>
+
+                <h1>
+                    Welcome back, {{ current_user.name }} 👋
+                </h1>
+
+                <p class="hero-text">
+                    Manage your wallet, send money and track your transactions
+                    securely from one place.
+                </p>
+            </div>
+
+            <div class="status-badge">
+                <span></span>
+                Account Verified
+            </div>
+
+        </section>
+
+
+        <section class="account-grid">
+
+            <div class="info-card">
+
+                <div class="card-icon">👤</div>
+
+                <div>
+                    <p class="card-label">ACCOUNT</p>
+                    <h3>{{ current_user.name }}</h3>
+                    <p>{{ current_user.email }}</p>
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="card-icon">🛡️</div>
+
+                <div>
+                    <p class="card-label">STATUS</p>
+                    <h3>{{ current_user.verification_status }}</h3>
+                    <p>Account verified by administrator</p>
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="card-icon">💼</div>
+
+                <div>
+                    <p class="card-label">ACCOUNT TYPE</p>
+                    <h3>{{ current_user.role }}</h3>
+                    <p>PayLedger member account</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="quick-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">QUICK ACTIONS</p>
+                    <h2>What would you like to do?</h2>
+                </div>
+
+            </div>
+
+
+            <div class="action-grid">
+
+                <a
+                    class="action-card"
+                    href="{{ url_for('main.wallet') }}"
+                >
+
+                    <div class="action-icon wallet-icon">
+                        ₹
+                    </div>
+
+                    <div>
+                        <h3>My Wallet</h3>
+                        <p>View your balance and wallet details.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a
+                    class="action-card"
+                    href="{{ url_for('main.transfer') }}"
+                >
+
+                    <div class="action-icon transfer-icon">
+                        ↗
+                    </div>
+
+                    <div>
+                        <h3>Transfer Money</h3>
+                        <p>Send money securely to another user.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a
+                    class="action-card"
+                    href="{{ url_for('main.transactions') }}"
+                >
+
+                    <div class="action-icon transaction-icon">
+                        ☷
+                    </div>
+
+                    <div>
+                        <h3>Transactions</h3>
+                        <p>View your complete transaction history.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="security-card">
+
+            <div class="security-icon">
+                🔒
+            </div>
+
+            <div>
+
+                <h3>Your account is secure</h3>
+
+                <p>
+                    PayLedger keeps your wallet activity protected with
+                    authenticated access and transaction validation.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            © 2026 PayLedger · Secure Digital Wallet
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

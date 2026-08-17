@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PayLedger - Wallet Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: #1f3c88;
+            border-radius: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1f3c88, #3157b7);
+            color: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            opacity: 0.75;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .hero p {
+            margin: 0;
+        }
+
+        .hero-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.14);
+            font-size: 28px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #1f3c88;
+            background: white;
+            border: 1px solid #e2e6ef;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            background: #eef3ff;
+        }
+
+        .message {
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            background: #e9f8f0;
+            color: #16834b;
+            font-weight: bold;
+        }
+
+        .wallet-card {
+            background: white;
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(20, 35, 70, 0.07);
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #edf0f6;
+        }
+
+        .user-name {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .email {
+            color: #777f92;
+            font-size: 13px;
+        }
+
+        .wallet-status {
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #e8f7ed;
+            color: #187a3d;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .wallet-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-box {
+            background: #f7f9fd;
+            border-radius: 11px;
+            padding: 16px;
+        }
+
+        .summary-label {
+            color: #929bad;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            margin-bottom: 7px;
+        }
+
+        .summary-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: #3d475d;
+        }
+
+        .balance {
+            color: #1f3c88;
+            font-size: 20px;
+        }
+
+        .operations {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .operation {
+            border: 1px solid #e6eaf2;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .operation h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .operation p {
+            color: #777f92;
+            font-size: 13px;
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+
+        .credit-title {
+            color: #16834b;
+        }
+
+        .debit-title {
+            color: #d64545;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #777f92;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #dfe3eb;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1f3c88;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .credit-button {
+            background: #198754;
+            color: white;
+        }
+
+        .debit-button {
+            background: #dc3545;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #929bad;
+            font-size: 12px;
+        }
+
+        @media (max-width: 750px) {
+
+            .navbar {
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .wallet-summary,
+            .operations {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <span class="brand-icon">
+                ₹
+            </span>
+
+            <span>
+                PayLedger Admin
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('admin.users') }}">
+                Users
+            </a>
+
+            <a href="{{ url_for('admin.wallets') }}">
+                Wallets
+            </a>
+
+            <a href="{{ url_for('admin.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    ADMINISTRATION
+                </p>
+
+                <h1>
+                    Wallet Management
+                </h1>
+
+                <p>
+                    Manage member wallets and wallet balances securely.
+                </p>
+
+            </div>
+
+            <div class="hero-icon">
+                ₹
+            </div>
+
+        </section>
+
+
+        <div class="navigation">
+
+            <a href="{{ url_for('admin.users') }}">
+                User Management
+            </a>
+
+            <a href="{{ url_for('admin.wallets') }}">
+                Wallet Management
+            </a>
+
+            <a href="{{ url_for('admin.transactions') }}">
+                Transaction History
+            </a>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if wallets %}
+
+            {% for wallet in wallets %}
+
+                <section class="wallet-card">
+
+                    <div class="wallet-header">
+
+                        <div>
+
+                            <div class="user-name">
+                                {{ wallet.user.name }}
+                            </div>
+
+                            <div class="email">
+                                {{ wallet.user.email }}
+                            </div>
+
+                        </div>
+
+                        <div class="wallet-status">
+                            {{ wallet.status }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="wallet-summary">
+
+                        <div class="summary-box">
+
+                            <div class="summary-label">
+                                WALLET NUMBER
+                            </div>
+
+                            <div class="summary-value">
+                                {{ wallet.wallet_number }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-box">
+
+                            <div class="summary-label">
+                                CURRENT BALANCE
+                            </div>
+
+                            <div class="summary-value balance">
+                                ₹{{ wallet.balance }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-box">
+
+                            <div class="summary-label">
+                                WALLET STATUS
+                            </div>
+
+                            <div class="summary-value">
+                                {{ wallet.status }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="operations">
+
+                        <div class="operation">
+
+                            <h3 class="credit-title">
+                                Credit Wallet
+                            </h3>
+
+                            <p>
+                                Add funds to this wallet.
+                            </p>
+
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'admin.credit_wallet',
+                                    wallet_id=wallet.id
+                                ) }}"
+                            >
+
+                                <label>
+                                    Amount
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    step="0.01"
+                                    min="0.01"
+                                    placeholder="Enter amount"
+                                    required
+                                >
+
+
+                                <label>
+                                    Remark
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="remark"
+                                    maxlength="255"
+                                    placeholder="Example: Wallet top-up"
+                                    required
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="credit-button"
+                                >
+                                    + Credit Wallet
+                                </button>
+
+                            </form>
+
+                        </div>
+
+
+                        <div class="operation">
+
+                            <h3 class="debit-title">
+                                Debit Wallet
+                            </h3>
+
+                            <p>
+                                Remove funds from this wallet.
+                            </p>
+
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'admin.debit_wallet',
+                                    wallet_id=wallet.id
+                                ) }}"
+                            >
+
+                                <label>
+                                    Amount
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    step="0.01"
+                                    min="0.01"
+                                    placeholder="Enter amount"
+                                    required
+                                >
+
+
+                                <label>
+                                    Remark
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="remark"
+                                    maxlength="255"
+                                    placeholder="Example: Wallet adjustment"
+                                    required
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="debit-button"
+                                >
+                                    − Debit Wallet
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>
+                    No Wallets Available
+                </h3>
+
+                <p>
+                    There are currently no wallets in the system.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <footer class="footer">
+
+        © 2026 PayLedger · Admin Console
+
+    </footer>
+
+</body>
+
+</html>
+EOFcat > app/admin/templates/admin/wallets.html <<'EOF'
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PayLedger - Wallet Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: #1f3c88;
+            border-radius: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1f3c88, #3157b7);
+            color: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            opacity: 0.75;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .hero p {
+            margin: 0;
+        }
+
+        .hero-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.14);
+            font-size: 28px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #1f3c88;
+            background: white;
+            border: 1px solid #e2e6ef;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            background: #eef3ff;
+        }
+
+        .message {
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            background: #e9f8f0;
+            color: #16834b;
+            font-weight: bold;
+        }
+
+        .wallet-card {
+            background: white;
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(20, 35, 70, 0.07);
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #edf0f6;
+        }
+
+        .user-name {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .email {
+            color: #777f92;
+            font-size: 13px;
+        }
+
+        .wallet-status {
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #e8f7ed;
+            color: #187a3d;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .wallet-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .summary-box {
+            background: #f7f9fd;
+            border-radius: 11px;
+            padding: 16px;
+        }
+
+        .summary-label {
+            color: #929bad;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            margin-bottom: 7px;
+        }
+
+        .summary-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: #3d475d;
+        }
+
+        .balance {
+            color: #1f3c88;
+            font-size: 20px;
+        }
+
+        .operations {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .operation {
+            border: 1px solid #e6eaf2;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .operation h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .operation p {
+            color: #777f92;
+            font-size: 13px;
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+
+        .credit-title {
+            color: #16834b;
+        }
+
+        .debit-title {
+            color: #d64545;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #777f92;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #dfe3eb;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1f3c88;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .credit-button {
+            background: #198754;
+            color: white;
+        }
+
+        .debit-button {
+            background: #dc3545;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #929bad;
+            font-size: 12px;
+        }
+
+        @media (max-width: 750px) {
+
+            .navbar {
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .wallet-summary,
+            .operations {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <span class="brand-icon">
+                ₹
+            </span>
+
+            <span>
+                PayLedger Admin
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('admin.users') }}">
+                Users
+            </a>
+
+            <a href="{{ url_for('admin.wallets') }}">
+                Wallets
+            </a>
+
+            <a href="{{ url_for('admin.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    ADMINISTRATION
+                </p>
+
+                <h1>
+                    Wallet Management
+                </h1>
+
+                <p>
+                    Manage member wallets and wallet balances securely.
+                </p>
+
+            </div>
+
+            <div class="hero-icon">
+                ₹
+            </div>
+
+        </section>
+
+
+        <div class="navigation">
+
+            <a href="{{ url_for('admin.users') }}">
+                User Management
+            </a>
+
+            <a href="{{ url_for('admin.wallets') }}">
+                Wallet Management
+            </a>
+
+            <a href="{{ url_for('admin.transactions') }}">
+                Transaction History
+            </a>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if wallets %}
+
+            {% for wallet in wallets %}
+
+                <section class="wallet-card">
+
+                    <div class="wallet-header">
+
+                        <div>
+
+                            <div class="user-name">
+                                {{ wallet.user.name }}
+                            </div>
+
+                            <div class="email">
+                                {{ wallet.user.email }}
+                            </div>
+
+                        </div>
+
+                        <div class="wallet-status">
+                            {{ wallet.status }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="wallet-summary">
+
+                        <div class="summary-box">
+
+                            <div class="summary-label">
+                                WALLET NUMBER
+                            </div>
+
+                            <div class="summary-value">
+                                {{ wallet.wallet_number }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-box">
+
+                            <div class="summary-label">
+                                CURRENT BALANCE
+                            </div>
+
+                            <div class="summary-value balance">
+                                ₹{{ wallet.balance }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="summary-box">
+
+                            <div class="summary-label">
+                                WALLET STATUS
+                            </div>
+
+                            <div class="summary-value">
+                                {{ wallet.status }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="operations">
+
+                        <div class="operation">
+
+                            <h3 class="credit-title">
+                                Credit Wallet
+                            </h3>
+
+                            <p>
+                                Add funds to this wallet.
+                            </p>
+
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'admin.credit_wallet',
+                                    wallet_id=wallet.id
+                                ) }}"
+                            >
+
+                                <label>
+                                    Amount
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    step="0.01"
+                                    min="0.01"
+                                    placeholder="Enter amount"
+                                    required
+                                >
+
+
+                                <label>
+                                    Remark
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="remark"
+                                    maxlength="255"
+                                    placeholder="Example: Wallet top-up"
+                                    required
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="credit-button"
+                                >
+                                    + Credit Wallet
+                                </button>
+
+                            </form>
+
+                        </div>
+
+
+                        <div class="operation">
+
+                            <h3 class="debit-title">
+                                Debit Wallet
+                            </h3>
+
+                            <p>
+                                Remove funds from this wallet.
+                            </p>
+
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'admin.debit_wallet',
+                                    wallet_id=wallet.id
+                                ) }}"
+                            >
+
+                                <label>
+                                    Amount
+                                </label>
+
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    step="0.01"
+                                    min="0.01"
+                                    placeholder="Enter amount"
+                                    required
+                                >
+
+
+                                <label>
+                                    Remark
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="remark"
+                                    maxlength="255"
+                                    placeholder="Example: Wallet adjustment"
+                                    required
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="debit-button"
+                                >
+                                    − Debit Wallet
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>
+                    No Wallets Available
+                </h3>
+
+                <p>
+                    There are currently no wallets in the system.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <footer class="footer">
+
+        © 2026 PayLedger · Admin Console
+
+    </footer>
+
+</body>
+
+</html>

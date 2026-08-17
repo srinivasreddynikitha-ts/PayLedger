@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Transactions - PayLedger</title>
+</head>
+
+<body>
+
+    <h1>Transaction History</h1>
+
+    <p>
+        <a href="{{ url_for('admin.wallets') }}">
+            Back to Wallet Management
+        </a>
+    </p>
+
+    <hr>
+
+    {% if transactions %}
+
+        {% for transaction in transactions %}
+
+            <h2>Transaction #{{ transaction.id }}</h2>
+
+            <p>
+                <strong>Reference:</strong>
+                {{ transaction.reference }}
+            </p>
+
+            <p>
+                <strong>Type:</strong>
+                {{ transaction.transaction_type }}
+            </p>
+
+            <p>
+                <strong>Amount:</strong>
+                ₹{{ transaction.amount }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ transaction.status }}
+            </p>
+
+            <p>
+                <strong>Remark:</strong>
+                {{ transaction.remark or "N/A" }}
+            </p>
+
+            <p>
+                <strong>Initiated By:</strong>
+                User ID {{ transaction.initiated_by }}
+            </p>
+
+            <p>
+                <strong>Created At:</strong>
+                {{ transaction.created_at }}
+            </p>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No transactions found.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('main.dashboard') }}">
+        Back to Dashboard
+    </a>
+
+</body>
+
+</html>

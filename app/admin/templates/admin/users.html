@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PayLedger - User Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: #1f3c88;
+            border-radius: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1f3c88, #3157b7);
+            color: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            opacity: 0.75;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .hero p {
+            margin: 0;
+        }
+
+        .hero-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.14);
+            font-size: 28px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #1f3c88;
+            background: white;
+            border: 1px solid #e2e6ef;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            background: #eef3ff;
+        }
+
+        .message {
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            background: #e9f8f0;
+            color: #16834b;
+            font-weight: bold;
+        }
+
+        .user-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 18px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(20, 35, 70, 0.07);
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #edf0f6;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+        }
+
+        .user-name {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .verified {
+            background: #e8f7ed;
+            color: #187a3d;
+        }
+
+        .pending {
+            background: #fff4d6;
+            color: #946200;
+        }
+
+        .rejected {
+            background: #fde8e8;
+            color: #b42318;
+        }
+
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px 35px;
+        }
+
+        .info {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .label {
+            color: #929bad;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+        }
+
+        .value {
+            color: #3d475d;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .balance {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1f3c88;
+        }
+
+        .actions {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #edf0f6;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .verify {
+            background: #198754;
+            color: white;
+        }
+
+        .reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .empty p {
+            color: #777f92;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #929bad;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .user-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <span class="brand-icon">
+                ₹
+            </span>
+
+            <span>
+                PayLedger Admin
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('admin.users') }}">
+                Users
+            </a>
+
+            <a href="{{ url_for('admin.wallets') }}">
+                Wallets
+            </a>
+
+            <a href="{{ url_for('admin.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    ADMINISTRATION
+                </p>
+
+                <h1>
+                    User Management
+                </h1>
+
+                <p>
+                    Manage PayLedger accounts and verification status.
+                </p>
+
+            </div>
+
+            <div class="hero-icon">
+                👥
+            </div>
+
+        </section>
+
+
+        <div class="navigation">
+
+            <a href="{{ url_for('admin.users') }}">
+                User Management
+            </a>
+
+            <a href="{{ url_for('admin.wallets') }}">
+                Wallet Management
+            </a>
+
+            <a href="{{ url_for('admin.transactions') }}">
+                Transaction History
+            </a>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if users %}
+
+            {% for user in users %}
+
+                <section class="user-card">
+
+                    <div class="user-header">
+
+                        <div class="user-name">
+                            {{ user.name }}
+                        </div>
+
+                        <div
+                            class="status
+                            {% if user.verification_status == 'VERIFIED' %}
+                                verified
+                            {% elif user.verification_status == 'PENDING' %}
+                                pending
+                            {% else %}
+                                rejected
+                            {% endif %}"
+                        >
+                            {{ user.verification_status }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="user-grid">
+
+                        <p class="info">
+
+                            <span class="label">
+                                USER ID
+                            </span>
+
+                            <span class="value">
+                                {{ user.id }}
+                            </span>
+
+                        </p>
+
+
+                        <p class="info">
+
+                            <span class="label">
+                                EMAIL
+                            </span>
+
+                            <span class="value">
+                                {{ user.email }}
+                            </span>
+
+                        </p>
+
+
+                        <p class="info">
+
+                            <span class="label">
+                                ROLE
+                            </span>
+
+                            <span class="value">
+                                {{ user.role }}
+                            </span>
+
+                        </p>
+
+
+                        <p class="info">
+
+                            <span class="label">
+                                CREATED
+                            </span>
+
+                            <span class="value">
+                                {{ user.created_at }}
+                            </span>
+
+                        </p>
+
+
+                        {% if user.wallet %}
+
+                            <p class="info">
+
+                                <span class="label">
+                                    WALLET
+                                </span>
+
+                                <span class="value">
+                                    {{ user.wallet.wallet_number }}
+                                </span>
+
+                            </p>
+
+
+                            <p class="info">
+
+                                <span class="label">
+                                    BALANCE
+                                </span>
+
+                                <span class="balance">
+                                    ₹{{ user.wallet.balance }}
+                                </span>
+
+                            </p>
+
+                        {% else %}
+
+                            <p class="info">
+
+                                <span class="label">
+                                    WALLET
+                                </span>
+
+                                <span class="value">
+                                    No wallet created
+                                </span>
+
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if user.verification_status == "PENDING" %}
+
+                        <div class="actions">
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'admin.verify_user',
+                                    user_id=user.id
+                                ) }}"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="verify"
+                                >
+                                    ✓ Verify User
+                                </button>
+
+                            </form>
+
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'admin.reject_user',
+                                    user_id=user.id
+                                ) }}"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="reject"
+                                >
+                                    ✕ Reject User
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>
+                    No Users Found
+                </h3>
+
+                <p>
+                    There are currently no registered users.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <footer class="footer">
+
+        © 2026 PayLedger · Admin Console
+
+    </footer>
+
+</body>
+
+</html>

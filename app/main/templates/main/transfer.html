@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transfer Money - PayLedger</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('main.static', filename='css/member.css') }}"
+    >
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+            <span class="brand-icon">₹</span>
+            <span>PayLedger</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('main.wallet') }}">
+                My Wallet
+            </a>
+
+            <a href="{{ url_for('main.transactions') }}">
+                Transactions
+            </a>
+
+            <a class="active" href="{{ url_for('main.transfer') }}">
+                Transfer
+            </a>
+
+            <a class="logout" href="{{ url_for('auth.logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    MONEY TRANSFER
+                </p>
+
+                <h1>
+                    Send Money
+                </h1>
+
+                <p class="hero-text">
+                    Transfer money securely to another PayLedger user.
+                </p>
+
+            </div>
+
+            <div class="balance-pill">
+                Available: ₹{{ wallet.balance }}
+            </div>
+
+        </section>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert-card {{ category }}">
+                        <strong>{{ message }}</strong>
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <section class="transfer-layout">
+
+            <div class="wallet-card transfer-card">
+
+                <div class="form-heading">
+
+                    <div class="form-icon">
+                        ↗
+                    </div>
+
+                    <div>
+                        <p class="card-label">
+                            SECURE TRANSFER
+                        </p>
+
+                        <h2>Send Money</h2>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('main.transfer') }}"
+                >
+
+                    <div class="form-group">
+
+                        <label for="receiver_email">
+                            Receiver Email
+                        </label>
+
+                        <input
+                            id="receiver_email"
+                            type="email"
+                            name="receiver_email"
+                            placeholder="Enter receiver's email"
+                            required
+                        >
+
+                        <small>
+                            Enter the email address registered with PayLedger.
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="amount">
+                            Amount
+                        </label>
+
+                        <div class="amount-input">
+
+                            <span>₹</span>
+
+                            <input
+                                id="amount"
+                                type="number"
+                                name="amount"
+                                step="0.01"
+                                min="0.01"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="remark">
+                            Remark
+                        </label>
+
+                        <input
+                            id="remark"
+                            type="text"
+                            name="remark"
+                            maxlength="255"
+                            placeholder="Example: Payment for lunch"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="transfer-button"
+                    >
+                        Transfer Money
+                        <span>→</span>
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <aside class="transfer-info">
+
+                <div class="info-box">
+
+                    <div class="info-box-icon">
+                        ₹
+                    </div>
+
+                    <h3>Available Balance</h3>
+
+                    <div class="available-balance">
+                        ₹{{ wallet.balance }}
+                    </div>
+
+                    <p>
+                        This is the amount currently available
+                        in your wallet.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box security-box">
+
+                    <div class="info-box-icon">
+                        🔒
+                    </div>
+
+                    <h3>Secure Transfer</h3>
+
+                    <p>
+                        Transfers are validated before money is
+                        moved between wallets.
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-box-icon">
+                        ✓
+                    </div>
+
+                    <h3>Before You Send</h3>
+
+                    <p>
+                        Check the receiver's email and amount
+                        carefully before confirming.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+
+        <a
+            class="back-link"
+            href="{{ url_for('main.wallet') }}"
+        >
+            ← Back to My Wallet
+        </a>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            © 2026 PayLedger · Secure Digital Wallet
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

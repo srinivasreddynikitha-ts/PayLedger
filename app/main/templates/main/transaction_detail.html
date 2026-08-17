@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transaction Details - PayLedger</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('main.static', filename='css/member.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="brand">
+            <span class="brand-icon">₹</span>
+            <span>PayLedger</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('main.dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('main.wallet') }}">
+                My Wallet
+            </a>
+
+            <a class="active" href="{{ url_for('main.transactions') }}">
+                Transactions
+            </a>
+
+            <a href="{{ url_for('main.transfer') }}">
+                Transfer
+            </a>
+
+            <a class="logout" href="{{ url_for('auth.logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero detail-hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    TRANSACTION DETAILS
+                </p>
+
+                <h1>
+                    {{ display_type }}
+                </h1>
+
+                <p class="hero-text">
+                    Complete information about this transaction.
+                </p>
+
+            </div>
+
+            <div class="detail-status">
+                <span class="status-dot"></span>
+                {{ transaction.status }}
+            </div>
+
+        </section>
+
+
+        <section class="detail-card">
+
+            <div class="amount-section">
+
+                <div class="detail-icon
+                    {% if display_class == 'credit' %}
+                        credit-bg
+                    {% else %}
+                        debit-bg
+                    {% endif %}
+                ">
+
+                    {{ display_sign }}
+
+                </div>
+
+                <div>
+
+                    <p class="amount-label">
+                        TRANSACTION AMOUNT
+                    </p>
+
+                    <h2 class="{{ display_class }}">
+                        {{ display_sign }} ₹{{ transaction.amount }}
+                    </h2>
+
+                    <p class="reference">
+                        {{ transaction.reference }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if transaction.transaction_type == "MEMBER_TRANSFER" %}
+
+                <div class="transfer-parties">
+
+                    <div class="party-card">
+
+                        <span class="party-label">
+                            FROM
+                        </span>
+
+                        <h3>
+                            {{ sender_name }}
+                        </h3>
+
+                        <p>
+                            Wallet: {{ sender_wallet }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="transfer-arrow">
+                        →
+                    </div>
+
+
+                    <div class="party-card">
+
+                        <span class="party-label">
+                            TO
+                        </span>
+
+                        <h3>
+                            {{ receiver_name }}
+                        </h3>
+
+                        <p>
+                            Wallet: {{ receiver_wallet }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% elif transaction.transaction_type == "ADMIN_CREDIT" %}
+
+                <div class="transfer-parties">
+
+                    <div class="party-card">
+
+                        <span class="party-label">
+                            FROM
+                        </span>
+
+                        <h3>
+                            PayLedger System
+                        </h3>
+
+                        <p>
+                            System transaction
+                        </p>
+
+                    </div>
+
+
+                    <div class="transfer-arrow">
+                        →
+                    </div>
+
+
+                    <div class="party-card">
+
+                        <span class="party-label">
+                            TO
+                        </span>
+
+                        <h3>
+                            {{ receiver_name }}
+                        </h3>
+
+                        <p>
+                            Wallet: {{ receiver_wallet }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% elif transaction.transaction_type == "ADMIN_DEBIT" %}
+
+                <div class="transfer-parties">
+
+                    <div class="party-card">
+
+                        <span class="party-label">
+                            FROM
+                        </span>
+
+                        <h3>
+                            {{ sender_name }}
+                        </h3>
+
+                        <p>
+                            Wallet: {{ sender_wallet }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="transfer-arrow">
+                        →
+                    </div>
+
+
+                    <div class="party-card">
+
+                        <span class="party-label">
+                            TO
+                        </span>
+
+                        <h3>
+                            PayLedger System
+                        </h3>
+
+                        <p>
+                            System transaction
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="detail-divider"></div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-field">
+
+                    <span>
+                        STATUS
+                    </span>
+
+                    <strong class="completed-text">
+                        {{ transaction.status }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-field">
+
+                    <span>
+                        TRANSACTION TYPE
+                    </span>
+
+                    <strong>
+                        {{ display_type }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-field">
+
+                    <span>
+                        REMARK
+                    </span>
+
+                    <strong>
+                        {{ transaction.remark or "N/A" }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-field">
+
+                    <span>
+                        DATE
+                    </span>
+
+                    <strong>
+                        {{ transaction.created_at }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-field">
+
+                    <span>
+                        TRANSACTION ID
+                    </span>
+
+                    <strong>
+                        #{{ transaction.id }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-field">
+
+                    <span>
+                        REFERENCE
+                    </span>
+
+                    <strong>
+                        {{ transaction.reference }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <a
+            class="back-link"
+            href="{{ url_for('main.transactions') }}"
+        >
+            ← Back to Transactions
+        </a>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            © 2026 PayLedger · Secure Digital Wallet
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
