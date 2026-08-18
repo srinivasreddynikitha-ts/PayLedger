@@ -30,6 +30,8 @@ def register():
 
     form = RegistrationForm()
 
+    print("REGISTER FORM ERRORS:", form.errors)
+
     if form.validate_on_submit():
 
         existing_user = db.session.scalar(
