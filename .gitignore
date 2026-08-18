@@ -8,3 +8,6 @@ instance/
 *.sqlite
 *.sqlite3
 .DS_Store
+
+# Database backups
+*.sql

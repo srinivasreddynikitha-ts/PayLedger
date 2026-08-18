@@ -73,3 +73,29 @@ class LoginForm(FlaskForm):
     )
 
     submit = SubmitField("Login")
+
+class TransferForm(FlaskForm):
+    receiver_email = StringField(
+        "Receiver Email",
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+
+    amount = StringField(
+        "Amount",
+        validators=[
+            DataRequired()
+        ]
+    )
+
+    remark = StringField(
+        "Remark",
+        validators=[
+            DataRequired(),
+            Length(max=255)
+        ]
+    )
+
+    submit = SubmitField("Send Money")

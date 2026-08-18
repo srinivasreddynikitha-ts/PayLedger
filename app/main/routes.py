@@ -15,6 +15,7 @@ from app.models.ledger_entry import LedgerEntry
 from app.models.transaction import Transaction
 from app.models.user import User
 from app.services.ledger_service import member_transfer
+from app.auth.forms import TransferForm
 
 
 main = Blueprint(
@@ -365,6 +366,7 @@ def transaction_detail(transaction_id):
 @main.route("/transfer", methods=["GET", "POST"])
 @login_required
 def transfer():
+    form = TransferForm()
 
     check = verified_user_required()
 
@@ -454,5 +456,6 @@ def transfer():
 
     return render_template(
         "main/transfer.html",
-        wallet=sender_wallet
+        wallet=sender_wallet,
+        form=form
     )

@@ -1,227 +1,688 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PayLedger Dashboard</title>
+    <title>PayLedger — Dashboard</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('main.static', filename='css/member.css') }}"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Inter", sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 72px;
+            padding: 0 6%;
+            background: #ffffff;
+            border-bottom: 1px solid #e8edf3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #111827;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            width: 37px;
+            height: 37px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 7px 17px rgba(37,99,235,0.20);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            padding: 9px 13px;
+            border-radius: 8px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .nav-links .active {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .logout {
+            color: #dc2626 !important;
+        }
+
+        .logout:hover {
+            background: #fef2f2 !important;
+        }
+
+        /* PAGE */
+
+        .container {
+            width: 88%;
+            max-width: 1180px;
+            margin: auto;
+            padding: 42px 0 55px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome small {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .welcome h1 {
+            margin-top: 7px;
+            font-size: 31px;
+            letter-spacing: -1px;
+        }
+
+        .welcome p {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* BALANCE CARD */
+
+        .balance-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 225px;
+            padding: 32px;
+            border-radius: 22px;
+            color: white;
+            background: linear-gradient(135deg, #111827, #1e40af 62%, #4f46e5);
+            box-shadow: 0 18px 40px rgba(30,64,175,0.20);
+            margin-bottom: 28px;
+        }
+
+        .balance-card::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            right: -90px;
+            top: -140px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .balance-card::after {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            right: 90px;
+            bottom: -150px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .balance-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .balance-label {
+            color: #cbd5e1;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance {
+            margin-top: 9px;
+            font-size: 43px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        .wallet-number {
+            margin-top: 15px;
+            color: #cbd5e1;
+            font-size: 11px;
+        }
+
+        .wallet-number strong {
+            color: white;
+            margin-left: 5px;
+        }
+
+        .verified {
+            position: absolute;
+            top: 28px;
+            right: 30px;
+            z-index: 2;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.11);
+            border: 1px solid rgba(255,255,255,0.15);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* QUICK ACTIONS */
+
+        .section-title {
+            margin-bottom: 15px;
+        }
+
+        .section-title h2 {
+            font-size: 17px;
+        }
+
+        .section-title p {
+            margin-top: 5px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            padding: 22px;
+            background: white;
+            border: 1px solid #e6ebf1;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #111827;
+            transition: 0.2s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: #bfdbfe;
+            box-shadow: 0 12px 28px rgba(15,23,42,0.07);
+        }
+
+        .action-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            margin-bottom: 17px;
+        }
+
+        .action-card h3 {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .action-card p {
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .arrow {
+            display: block;
+            margin-top: 15px;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ACCOUNT */
+
+        .account-card {
+            padding: 24px;
+            background: white;
+            border: 1px solid #e6ebf1;
+            border-radius: 17px;
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .account-item {
+            padding: 5px 15px;
+            border-right: 1px solid #edf0f4;
+        }
+
+        .account-item:last-child {
+            border-right: none;
+        }
+
+        .account-item small {
+            color: #94a3b8;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .account-item p {
+            margin-top: 7px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #15803d !important;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        /* SECURITY */
+
+        .security {
+            margin-top: 22px;
+            padding: 17px 20px;
+            border-radius: 13px;
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .security-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .security strong {
+            font-size: 11px;
+        }
+
+        .security p {
+            margin-top: 3px;
+            color: #64748b;
+            font-size: 10px;
+        }
+
+        footer {
+            padding: 22px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+        @media (max-width: 800px) {
+
+            .nav-links a {
+                padding: 8px 6px;
+                font-size: 10px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .account-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .account-item {
+                border-right: none;
+                border-bottom: 1px solid #edf0f4;
+                padding: 13px 0;
+            }
+
+            .account-item:last-child {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .navbar {
+                height: auto;
+                padding: 15px 20px;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .nav-links a {
+                font-size: 9px;
+            }
+
+            .balance {
+                font-size: 34px;
+            }
+
+            .verified {
+                position: static;
+                display: inline-block;
+                margin-top: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
 
-        <div class="brand">
-            <span class="brand-icon">₹</span>
-            <span>PayLedger</span>
-        </div>
+    <a href="{{ url_for('main.dashboard') }}" class="logo">
+        <span class="logo-icon">₹</span>
+        PayLedger
+    </a>
 
-        <div class="nav-links">
+    <div class="nav-links">
 
-            <a class="active" href="{{ url_for('main.dashboard') }}">
-                Dashboard
-            </a>
+        <a href="{{ url_for('main.dashboard') }}" class="active">
+            Dashboard
+        </a>
 
-            <a href="{{ url_for('main.wallet') }}">
-                My Wallet
-            </a>
+        <a href="{{ url_for('main.wallet') }}">
+            My Wallet
+        </a>
 
-            <a href="{{ url_for('main.transactions') }}">
-                Transactions
-            </a>
+        <a href="{{ url_for('main.transactions') }}">
+            Transactions
+        </a>
 
-            <a href="{{ url_for('main.transfer') }}">
-                Transfer
-            </a>
+        <a href="{{ url_for('main.transfer') }}">
+            Transfer
+        </a>
 
-            <a class="logout" href="{{ url_for('auth.logout') }}">
-                Logout
-            </a>
+        <a href="{{ url_for('auth.logout') }}" class="logout">
+            Logout
+        </a>
 
-        </div>
+    </div>
 
-    </nav>
+</nav>
 
 
-    <main class="container">
+<main class="container">
 
-        <section class="hero">
+    <section class="welcome">
 
-            <div>
-                <p class="eyebrow">PERSONAL WALLET</p>
+        <small>PERSONAL WALLET</small>
 
-                <h1>
-                    Welcome back, {{ current_user.name }} 👋
-                </h1>
-
-                <p class="hero-text">
-                    Manage your wallet, send money and track your transactions
-                    securely from one place.
-                </p>
-            </div>
-
-            <div class="status-badge">
-                <span></span>
-                Account Verified
-            </div>
-
-        </section>
-
-
-        <section class="account-grid">
-
-            <div class="info-card">
-
-                <div class="card-icon">👤</div>
-
-                <div>
-                    <p class="card-label">ACCOUNT</p>
-                    <h3>{{ current_user.name }}</h3>
-                    <p>{{ current_user.email }}</p>
-                </div>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <div class="card-icon">🛡️</div>
-
-                <div>
-                    <p class="card-label">STATUS</p>
-                    <h3>{{ current_user.verification_status }}</h3>
-                    <p>Account verified by administrator</p>
-                </div>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <div class="card-icon">💼</div>
-
-                <div>
-                    <p class="card-label">ACCOUNT TYPE</p>
-                    <h3>{{ current_user.role }}</h3>
-                    <p>PayLedger member account</p>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section class="quick-section">
-
-            <div class="section-heading">
-
-                <div>
-                    <p class="eyebrow">QUICK ACTIONS</p>
-                    <h2>What would you like to do?</h2>
-                </div>
-
-            </div>
-
-
-            <div class="action-grid">
-
-                <a
-                    class="action-card"
-                    href="{{ url_for('main.wallet') }}"
-                >
-
-                    <div class="action-icon wallet-icon">
-                        ₹
-                    </div>
-
-                    <div>
-                        <h3>My Wallet</h3>
-                        <p>View your balance and wallet details.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a
-                    class="action-card"
-                    href="{{ url_for('main.transfer') }}"
-                >
-
-                    <div class="action-icon transfer-icon">
-                        ↗
-                    </div>
-
-                    <div>
-                        <h3>Transfer Money</h3>
-                        <p>Send money securely to another user.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a
-                    class="action-card"
-                    href="{{ url_for('main.transactions') }}"
-                >
-
-                    <div class="action-icon transaction-icon">
-                        ☷
-                    </div>
-
-                    <div>
-                        <h3>Transactions</h3>
-                        <p>View your complete transaction history.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <section class="security-card">
-
-            <div class="security-icon">
-                🔒
-            </div>
-
-            <div>
-
-                <h3>Your account is secure</h3>
-
-                <p>
-                    PayLedger keeps your wallet activity protected with
-                    authenticated access and transaction validation.
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <footer class="footer">
+        <h1>
+            Welcome back, {{ current_user.name }} 👋
+        </h1>
 
         <p>
-            © 2026 PayLedger · Secure Digital Wallet
+            Manage your wallet, send money and track your transactions securely from one place.
         </p>
 
-    </footer>
+    </section>
+
+
+    <!-- BALANCE -->
+
+    <section class="balance-card">
+
+        <div class="balance-content">
+
+            <div class="balance-label">
+                Available Balance
+            </div>
+
+            {% set wallet = current_user.wallet %}
+
+            <div class="balance">
+                ₹{{ "%.2f"|format(wallet.balance if wallet else 0) }}
+            </div>
+
+            {% if wallet %}
+
+            <div class="wallet-number">
+                Wallet Number
+                <strong>{{ wallet.wallet_number }}</strong>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="verified">
+            ✓ Account Verified
+        </div>
+
+    </section>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="section-title">
+
+        <h2>
+            Quick Actions
+        </h2>
+
+        <p>
+            What would you like to do?
+        </p>
+
+    </div>
+
+
+    <section class="actions">
+
+        <a href="{{ url_for('main.wallet') }}" class="action-card">
+
+            <div class="action-icon">
+                ₹
+            </div>
+
+            <h3>
+                My Wallet
+            </h3>
+
+            <p>
+                View your balance and wallet details.
+            </p>
+
+            <span class="arrow">
+                View Wallet →
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('main.transfer') }}" class="action-card">
+
+            <div class="action-icon">
+                ↗
+            </div>
+
+            <h3>
+                Transfer Money
+            </h3>
+
+            <p>
+                Send money securely to another user.
+            </p>
+
+            <span class="arrow">
+                Send Money →
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('main.transactions') }}" class="action-card">
+
+            <div class="action-icon">
+                ☷
+            </div>
+
+            <h3>
+                Transactions
+            </h3>
+
+            <p>
+                View your complete transaction history.
+            </p>
+
+            <span class="arrow">
+                View Transactions →
+            </span>
+
+        </a>
+
+    </section>
+
+
+    <!-- ACCOUNT -->
+
+    <div class="section-title">
+
+        <h2>
+            Account Overview
+        </h2>
+
+    </div>
+
+
+    <section class="account-card">
+
+        <div class="account-grid">
+
+            <div class="account-item">
+
+                <small>Account</small>
+
+                <p>
+                    {{ current_user.name }}
+                </p>
+
+                <p style="font-weight: 500; color: #64748b;">
+                    {{ current_user.email }}
+                </p>
+
+            </div>
+
+
+            <div class="account-item">
+
+                <small>Status</small>
+
+                <p class="status">
+                    <span class="status-dot"></span>
+                    VERIFIED
+                </p>
+
+            </div>
+
+
+            <div class="account-item">
+
+                <small>Account Type</small>
+
+                <p>
+                    {{ current_user.role }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="security">
+
+        <div class="security-icon">
+            🔒
+        </div>
+
+        <div>
+
+            <strong>
+                Your account is secure
+            </strong>
+
+            <p>
+                PayLedger keeps your wallet activity protected with authenticated access and transaction validation.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer>
+    © 2026 PayLedger · Secure Digital Wallet
+</footer>
 
 </body>
-
 </html>
