@@ -27,6 +27,14 @@ main = Blueprint(
 )
 
 
+@main.route("/")
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.dashboard"))
+
+    return render_template("main/home.html")
+
+
 # ============================================================
 # VERIFIED USER CHECK
 # ============================================================

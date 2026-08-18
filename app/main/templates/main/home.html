@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PayLedger — Secure Digital Wallet</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f7f9fc;
+            color: #111827;
+        }
+
+        .navbar {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 23px;
+            font-weight: 800;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .btn-login {
+            color: #374151;
+            border: 1px solid #d1d5db;
+            background: white;
+        }
+
+        .btn-login:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            box-shadow: 0 8px 20px rgba(37,99,235,0.22);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(37,99,235,0.3);
+        }
+
+        .hero {
+            min-height: 650px;
+            padding: 90px 7%;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center;
+            gap: 70px;
+            background:
+                radial-gradient(circle at 80% 20%, rgba(99,102,241,0.15), transparent 30%),
+                radial-gradient(circle at 10% 20%, rgba(37,99,235,0.1), transparent 30%),
+                #f7f9fc;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 5vw, 68px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 18px;
+            line-height: 1.7;
+            max-width: 570px;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions .btn {
+            padding: 15px 24px;
+        }
+
+        .wallet-preview {
+            position: relative;
+        }
+
+        .wallet-card {
+            max-width: 430px;
+            margin: auto;
+            padding: 32px;
+            border-radius: 25px;
+            color: white;
+            background: linear-gradient(135deg, #111827, #1e3a8a 55%, #4f46e5);
+            box-shadow: 0 30px 60px rgba(31,41,55,0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-card::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            right: -50px;
+            top: -60px;
+        }
+
+        .wallet-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .wallet-title {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .wallet-brand {
+            font-weight: 800;
+        }
+
+        .balance-label {
+            font-size: 13px;
+            opacity: 0.75;
+            margin-bottom: 8px;
+        }
+
+        .balance {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .wallet-number {
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .floating-card {
+            position: absolute;
+            right: 0;
+            bottom: -35px;
+            background: white;
+            border-radius: 15px;
+            padding: 18px 22px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .floating-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #dcfce7;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .floating-card strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .floating-card span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .features {
+            padding: 90px 7%;
+            background: white;
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 50px;
+        }
+
+        .section-heading h2 {
+            font-size: 38px;
+            margin-bottom: 14px;
+        }
+
+        .section-heading p {
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .feature {
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            transition: 0.25s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .feature p {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .cta {
+            margin: 70px 7%;
+            padding: 65px 8%;
+            border-radius: 25px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #111827, #312e81);
+        }
+
+        .cta h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #d1d5db;
+            margin-bottom: 28px;
+        }
+
+        .cta .btn {
+            display: inline-block;
+            background: white;
+            color: #312e81;
+        }
+
+        footer {
+            padding: 30px 7%;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 60px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 46px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .nav-buttons .btn {
+                padding: 9px 12px;
+            }
+
+            .hero,
+            .features {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .wallet-card {
+                padding: 25px;
+            }
+
+            .floating-card {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                margin: -20px auto 0;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="{{ url_for('main.home') }}" class="logo">
+        <span class="logo-icon">₹</span>
+        PayLedger
+    </a>
+
+    <div class="nav-buttons">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-login">
+            Login
+        </a>
+
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
+            Create Account
+        </a>
+    </div>
+</nav>
+
+<section class="hero">
+
+    <div>
+        <span class="hero-badge">✦ Modern Digital Wallet</span>
+
+        <h1>
+            Your money.<br>
+            <span class="gradient-text">Your control.</span>
+        </h1>
+
+        <p>
+            PayLedger is a secure digital wallet platform that makes
+            managing your balance, sending money and tracking transactions
+            simple and reliable.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
+                Get Started →
+            </a>
+
+            <a href="{{ url_for('auth.login') }}" class="btn btn-login">
+                Sign In
+            </a>
+        </div>
+    </div>
+
+    <div class="wallet-preview">
+
+        <div class="wallet-card">
+
+            <div class="wallet-top">
+                <span class="wallet-title">DIGITAL WALLET</span>
+                <span class="wallet-brand">PayLedger</span>
+            </div>
+
+            <div class="balance-label">Available Balance</div>
+
+            <div class="balance">₹10,000.00</div>
+
+            <div class="wallet-number">
+                PL •••• •••• 2026
+            </div>
+
+        </div>
+
+        <div class="floating-card">
+            <div class="floating-icon">✓</div>
+
+            <div>
+                <strong>Transfer Successful</strong>
+                <span>Money sent securely</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="section-heading">
+        <h2>Everything you need in one wallet</h2>
+
+        <p>
+            Manage your digital money with a simple and secure
+            financial experience.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature">
+            <div class="feature-icon">↗</div>
+            <h3>Secure Transfers</h3>
+            <p>
+                Send money to verified PayLedger users quickly
+                with transaction validation.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">₹</div>
+            <h3>Digital Wallet</h3>
+            <p>
+                View your available balance and manage your
+                wallet from one convenient dashboard.
+            </p>
+        </div>
+
+        <div class="feature">
+            <div class="feature-icon">☷</div>
+            <h3>Transaction History</h3>
+            <p>
+                Keep track of money received, money sent and
+                your complete wallet activity.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="cta">
+
+    <h2>Ready to manage your money?</h2>
+
+    <p>
+        Create your PayLedger account and experience
+        a smarter way to manage digital payments.
+    </p>
+
+    <a href="{{ url_for('auth.register') }}" class="btn">
+        Create Your Account →
+    </a>
+
+</section>
+
+<footer>
+    <span>© 2026 PayLedger</span>
+    <span>Secure Digital Wallet Platform</span>
+</footer>
+
+</body>
+</html>

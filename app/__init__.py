@@ -38,16 +38,4 @@ def create_app():
     from app.admin.routes import admin
     app.register_blueprint(admin)
 
-    @app.route("/")
-    def home():
-        return "<h1>Welcome to PayLedger</h1>"
-
-    @app.route("/test-db")
-    def test_db():
-        try:
-            db.session.execute(db.text("SELECT 1"))
-            return "<h1>Database connection successful!</h1>"
-        except Exception as e:
-            return f"<h1>Database connection failed</h1><p>{e}</p>"
-
     return app
