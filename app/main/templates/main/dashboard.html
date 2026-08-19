@@ -458,6 +458,12 @@
             Transfer
         </a>
 
+        {% if current_user.role == "ADMIN" %}
+        <a href="{{ url_for('admin.dashboard') }}">
+            Admin Panel
+        </a>
+        {% endif %}
+
         <a href="{{ url_for('auth.logout') }}" class="logout">
             Logout
         </a>

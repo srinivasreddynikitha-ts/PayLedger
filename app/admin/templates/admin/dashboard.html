@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayLedger - Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #1f3c88;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: #1f3c88;
+            border-radius: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1f3c88, #3157b7);
+            color: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            opacity: 0.75;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .hero p {
+            margin: 0;
+        }
+
+        .hero-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.14);
+            font-size: 28px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #1f3c88;
+            background: white;
+            border: 1px solid #e2e6ef;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            background: #eef3ff;
+        }
+
+        .section-title {
+            margin: 30px 0 15px;
+            font-size: 22px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 26px;
+            box-shadow: 0 4px 15px rgba(20, 35, 70, 0.07);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #eef3ff;
+            color: #1f3c88;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            margin: 0 0 8px;
+            font-size: 21px;
+        }
+
+        .card p {
+            color: #777f92;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .count {
+            font-size: 30px;
+            font-weight: bold;
+            color: #1f3c88;
+            margin-bottom: 18px;
+        }
+
+        .button {
+            display: inline-block;
+            text-decoration: none;
+            background: #1f3c88;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #3157b7;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 26px;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(20, 35, 70, 0.07);
+        }
+
+        .info-card h2 {
+            margin-top: 0;
+        }
+
+        .info-card p {
+            color: #777f92;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            color: #777f92;
+            font-size: 12px;
+            padding: 30px;
+        }
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 18px 20px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .hero {
+                padding: 25px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="brand">
+        <div class="brand-icon">₹</div>
+        PayLedger
+    </div>
+
+    <div class="nav-links">
+        <a href="{{ url_for('admin.dashboard') }}">Admin</a>
+        <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <div>
+            <p class="eyebrow">ADMINISTRATION</p>
+
+            <h1>Admin Control Panel</h1>
+
+            <p>
+                Manage users, wallets and transactions securely.
+            </p>
+        </div>
+
+        <div class="hero-icon">
+            ⚙
+        </div>
+
+    </section>
+
+
+    <div class="navigation">
+
+        <a href="{{ url_for('admin.dashboard') }}">
+            Admin Dashboard
+        </a>
+
+        <a href="{{ url_for('admin.users') }}">
+            Users
+        </a>
+
+        <a href="{{ url_for('admin.wallets') }}">
+            Wallets
+        </a>
+
+        <a href="{{ url_for('admin.transactions') }}">
+            Transactions
+        </a>
+
+        <a href="{{ url_for('main.dashboard') }}">
+            Member Dashboard
+        </a>
+
+    </div>
+
+
+    <h2 class="section-title">
+        System Overview
+    </h2>
+
+
+    <section class="cards">
+
+        <div class="card">
+
+            <div class="card-icon">
+                👥
+            </div>
+
+            <h2>Users</h2>
+
+            <p>
+                View registered PayLedger users and manage
+                their verification status.
+            </p>
+
+            <div class="count">
+                {{ users_count }}
+            </div>
+
+            <a class="button" href="{{ url_for('admin.users') }}">
+                Manage Users →
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                ₹
+            </div>
+
+            <h2>Wallets</h2>
+
+            <p>
+                Monitor member wallets, balances and
+                wallet information.
+            </p>
+
+            <div class="count">
+                {{ wallets_count }}
+            </div>
+
+            <a class="button" href="{{ url_for('admin.wallets') }}">
+                Manage Wallets →
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                ☷
+            </div>
+
+            <h2>Transactions</h2>
+
+            <p>
+                Review PayLedger transaction activity and
+                transfer records.
+            </p>
+
+            <div class="count">
+                {{ transactions_count }}
+            </div>
+
+            <a class="button" href="{{ url_for('admin.transactions') }}">
+                View Transactions →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <div class="info-card">
+
+        <h2>Admin Access</h2>
+
+        <p>
+            You are logged in with administrator privileges.
+            Use this control panel to manage PayLedger users,
+            wallets and transaction activity.
+        </p>
+
+    </div>
+
+</main>
+
+
+<footer>
+    © 2026 PayLedger · Secure Digital Wallet
+</footer>
+
+</body>
+</html>

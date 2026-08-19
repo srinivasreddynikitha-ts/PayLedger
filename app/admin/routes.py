@@ -33,6 +33,36 @@ admin = Blueprint(
 
 
 # ============================================================
+# ADMIN - CONTROL PANEL
+# ============================================================
+@admin.route("/")
+@login_required
+def dashboard():
+    if current_user.role != "ADMIN":
+        flash("Access denied. Admins only.", "danger")
+        return redirect(url_for("main.dashboard"))
+
+    users_count = db.session.scalar(
+        db.select(db.func.count(User.id))
+    ) or 0
+
+    wallets_count = db.session.scalar(
+        db.select(db.func.count(Wallet.id))
+    ) or 0
+
+    transactions_count = db.session.scalar(
+        db.select(db.func.count(Transaction.id))
+    ) or 0
+
+    return render_template(
+        "admin/dashboard.html",
+        users_count=users_count,
+        wallets_count=wallets_count,
+        transactions_count=transactions_count
+    )
+
+
+# ============================================================
 # ADMIN - PENDING USERS
 # ============================================================
 

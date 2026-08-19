@@ -111,6 +111,9 @@ def login():
 
         flash("Login successful!", "success")
 
+        if user.role == "ADMIN":
+            return redirect(url_for("admin.dashboard"))
+
         return redirect(url_for("main.dashboard"))
     return render_template(
         "auth/login.html",
